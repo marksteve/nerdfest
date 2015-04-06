@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+  <title>Nerdfest</title>
+  <link rel="stylesheet" href="//brick.a.ssl.fastly.net/Cardo:700">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #1e1d25;
+      margin: 0;
+      padding: 0;
+      font: 500%/2 Cardo, serif;
+      text-align: center;
+      text-transform: uppercase;
+      color: #fdee4a;
+    }
+
+    .page {
+      background: url(nerdfest_bg.jpg) no-repeat center center;
+      background-size: cover;
+      padding-bottom: 155%;
+      perspective: 1000px;
+      position: relative;
+    }
+
+    #timer {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      transform: rotateX(15deg);
+      text-shadow: 0 10px 10px black;
+    }
+    .days { font-size: 2em; }
+    .hours { font-size: 1.75em; }
+    .minutes { font-size: 1.5em; }
+    .seconds { font-size: 1.25em; }
+
+    .register {
+      position: absolute;
+      bottom: 1em;
+      left: 0;
+      width: 100%;
+      color: white;
+      text-decoration: none;
+      text-shadow: 0 10px 10px black;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div id="timer"></div>
+    <a class="register" href="http://www.ticketbase.com/events/nerdfest-2015">
+      Register now!
+    </a>
+  </div>
+  <script>
+  var Timer = function(el, until) {
+    this.el = el;
+    this.until = until;
+  };
+  Timer.prototype = {
+    update: function() {
+      var time = this.until - new Date();
+      var d = time / (1000 * 60 * 60 * 24);
+      var D = Math.floor(d);
+      var h = (d - D) * 24;
+      var H = Math.floor(h);
+      var m = (h - H) * 60;
+      var M = Math.floor(m);
+      var s = (m - M) * 60;
+      var S = Math.floor(s);
+      this.el.innerHTML =
+        '<div class="days">' + D + ' ' + this.p(D, 'day') + '</div>' +
+        '<div class="hours">' + H + ' ' + this.p(H, 'hour') + '</div>' +
+        '<div class="minutes">' + M + ' ' + this.p(M, 'minute') + '</div>' +
+        '<div class="seconds">' + S + ' ' + this.p(S, 'second') + '</div> to go until&hellip;';
+      requestAnimationFrame(this.update.bind(this));
+    },
+    p: function(x, s) {
+      if (!x || x > 1) return s + 's';
+      return s;
+    },
+    start: function() {
+      this.update();
+    }
+  };
+  var timer = new Timer(
+    document.getElementById('timer'),
+    new Date(2015, 3, 10, 18)
+  );
+  timer.start();
+  </script>
+</body>
+</html>
